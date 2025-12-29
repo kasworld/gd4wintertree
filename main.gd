@@ -46,9 +46,28 @@ func _ready() -> void:
 	$MovingCameraLightAround.set_center_pos_far(Vector3.ZERO, Vector3(0, 0, WorldSize.z),  WorldSize.length()*3)
 	$AxisArrow3D.set_colors().set_size(WorldSize.length()/10)
 	$FixedCameraLight.make_current()
-	add_child( preload("res://multi_mesh_shape/multi_mesh_shape.tscn").instantiate().init_wire_box(WorldSize, 1.0, Color.WHITE))
+	add_child( preload("res://multi_mesh_shape/multi_mesh_shape.tscn").instantiate(
+		).init_wire_box(WorldSize, WorldSize.length()/500, Color.WHITE, 0.5))
+	add_child(multi_line_by_pos([
+			[Vector3(0,0,0), Vector3(10,10,10)],
+			[Vector3(0,0,0), Vector3(-10,10,10)],
+		],1.0, Color.WHITE))
 
-
+func multi_line_by_pos(pos_list:Array, wire_width :float, co :Color, alpha :float = 1.0) -> MultiMeshShape:
+	var mlp :MultiMeshShape = preload("res://multi_mesh_shape/multi_mesh_shape.tscn").instantiate()
+	mlp.init_with_alpha(BoxMesh.new(), pos_list.size(), alpha, false)
+	mlp.set_color_all(co)
+	for i in pos_list.size():
+		var p1 :Vector3 = pos_list[i][0]
+		var p2 :Vector3 = pos_list[i][1]
+		var center := (p1+p2)/2
+		var l := p1.distance_to(p2)
+		var wire_scale := Vector3(wire_width, wire_width, l)
+		var t := Transform3D(Basis(), center)
+		t = t.looking_at(p2)
+		t = t.scaled_local(wire_scale)
+		mlp.multimesh.set_instance_transform(i,t)
+	return mlp
 
 func random_color() -> Color:
 	return NamedColorList.color_list.pick_random()[0]
