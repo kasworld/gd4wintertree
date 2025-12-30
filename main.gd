@@ -50,13 +50,21 @@ func _ready() -> void:
 		).init_wire_box(WorldSize, WorldSize.length()/500, Color.WHITE, 0.5))
 	add_child( preload("res://multi_mesh_shape/multi_mesh_shape.tscn").instantiate(
 		).multi_line_by_pos([
-			[Vector3(10,10,10), Vector3(10,-10,-10)],
-			[Vector3(10,10,10), Vector3(-10,10,-10)],
-			[Vector3(10,10,10), Vector3(-10,-10,10)],
-			[Vector3(10,-10,-10), Vector3(-10,10,-10)],
-			[Vector3(-10,10,-10), Vector3(-10,-10,10)],
-			[Vector3(-10,-10,10), Vector3(10,-10,-10)],
+			[Vector3(10,0,0), Vector3(0,10,0)],
+			[Vector3(10,0,0), Vector3(0,0,10)],
+			[Vector3(10,0,0), Vector3(0,-10,0)],
+			[Vector3(10,0,0), Vector3(0,0,-10)],
+			[Vector3(-10,0,0), Vector3(0,10,0)],
+			[Vector3(-10,0,0), Vector3(0,0,10)],
+			[Vector3(-10,0,0), Vector3(0,-10,0)],
+			[Vector3(-10,0,0), Vector3(0,0,-10)],
+			[Vector3(0,10,0), Vector3(0,0,10)],
+			[Vector3(0,0,10), Vector3(0,-10,0)],
+			[Vector3(0,-10,0), Vector3(0,0,-10)],
+			[Vector3(0,0,-10), Vector3(0,10,0)],
 		],1.0, Color.WHITE))
+
+
 
 func random_color() -> Color:
 	return NamedColorList.color_list.pick_random()[0]
