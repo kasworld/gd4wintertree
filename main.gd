@@ -48,7 +48,7 @@ func _ready() -> void:
 	$FixedCameraLight.make_current()
 	add_child( preload("res://multi_mesh_shape/multi_mesh_shape.tscn").instantiate(
 		).init_wire_box(WorldSize, WorldSize.length()/500, Color.WHITE, 0.5))
-
+	$LineTree.init(50, 50, random_color(),random_color())
 func random_color() -> Color:
 	return NamedColorList.color_list.pick_random()[0]
 

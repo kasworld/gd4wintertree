@@ -7,13 +7,9 @@
 resource_local_to_scene = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2vil8"]
-albedo_color = Color(0, 0.29639584, 3.85046e-07, 1)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_mc5fr"]
 material = SubResource("StandardMaterial3D_2vil8")
-top_radius = 0.1
-bottom_radius = 1.0
-height = 100.0
 
 [node name="LineTree" type="Node3D"]
 script = ExtResource("1_oh0jj")
