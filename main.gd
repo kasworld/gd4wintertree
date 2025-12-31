@@ -49,9 +49,6 @@ func _ready() -> void:
 	add_child( preload("res://multi_mesh_shape/multi_mesh_shape.tscn").instantiate(
 		).init_wire_box(WorldSize, WorldSize.length()/500, Color.WHITE, 0.5))
 
-	add_child( preload("res://multi_mesh_shape/multi_mesh_shape.tscn").instantiate(
-		).multi_line_by_pos(MultiMeshShape.OctahedronLines,1.0, Color.WHITE))
-
 func random_color() -> Color:
 	return NamedColorList.color_list.pick_random()[0]
 

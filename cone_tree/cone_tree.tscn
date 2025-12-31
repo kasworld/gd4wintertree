@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://brv55p1qf1u4k"]
+
+[ext_resource type="Script" uid="uid://6yhy4mbgejn3" path="res://cone_tree/cone_tree.gd" id="1_w3j45"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3eal0"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_3eal0"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_3eal0")
+height = 10.0
+
+[node name="ConeTree" type="Node3D"]
+script = ExtResource("1_w3j45")
+
+[node name="중심기둥" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_3eal0")
