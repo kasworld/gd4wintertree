@@ -51,6 +51,9 @@ func _ready() -> void:
 	$LineTree.init(WorldSize.y, WorldSize.z/2
 		).set_color(random_color(), random_color(), random_color())
 	$LineTree.position.y = - WorldSize.y/2
+	#print_debug($LineTree.instance_count_per_y)
+	#print_debug($LineTree.make_index_array())
+	#print_debug($LineTree/Lines.multimesh.visible_instance_count)
 
 func random_color() -> Color:
 	return NamedColorList.color_list.pick_random()[0]

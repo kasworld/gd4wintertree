@@ -1,7 +1,18 @@
 extends Node3D
 class_name LineTree
 
-var lines_per_y :Array[int] = []
+var instance_count_per_y :Array[int] = []
+
+func make_index_array() -> Array:
+	var rtn := []
+	var i := 0
+	for count in instance_count_per_y:
+		var index_array := []
+		for j in count:
+			index_array.append(i)
+			i += 1
+		rtn.append(index_array)
+	return rtn
 
 func init(h :float, w :float, line_width :float = 0.5, stage_count :int=5) -> LineTree:
 	$"중심기둥".mesh.top_radius = w/1000
@@ -22,7 +33,7 @@ func set_color(center_color :Color, co1 :Color, co2 :Color) -> LineTree:
 	return self
 
 func make_lines(start_y :float, count :int, h :float, r :float) -> Array:
-	lines_per_y.append(count)
+	instance_count_per_y.append(count)
 	var rtn := []
 	var rad_step := 2*PI / count
 	var end_y := start_y+h
