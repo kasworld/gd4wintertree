@@ -51,9 +51,21 @@ func _ready() -> void:
 	$LineTree.init(WorldSize.y, WorldSize.z/2
 		).set_color(random_color(), random_color(), random_color())
 	$LineTree.position.y = - WorldSize.y/2
-	#print_debug($LineTree.instance_count_per_y)
-	#print_debug($LineTree.make_index_array())
-	#print_debug($LineTree/Lines.multimesh.visible_instance_count)
+	line_tree_inst_index = $LineTree.make_index_array()
+	linetree_color_animate()
+
+var line_tree_inst_index :Array
+func linetree_color_animate() -> void:
+	for a in line_tree_inst_index:
+		var co := random_color()
+		for i in a:
+			$LineTree/Lines.set_inst_color(i, co)
+
+func linetree_color_animate2() -> void:
+	var a :Array = line_tree_inst_index.pick_random()
+	var co := random_color()
+	for i in a:
+		$LineTree/Lines.set_inst_color(i, co)
 
 func random_color() -> Color:
 	return NamedColorList.color_list.pick_random()[0]
@@ -61,6 +73,7 @@ func random_color() -> Color:
 func _process(_delta: float) -> void:
 	var now := Time.get_unix_time_from_system()
 	label_demo()
+	linetree_color_animate2()
 	if $MovingCameraLightHober.is_current_camera():
 		$MovingCameraLightHober.move_hober_around_z(now/2.3, Vector3.ZERO, WorldSize.length()/2, WorldSize.length()/4 )
 	elif $MovingCameraLightAround.is_current_camera():
