@@ -46,8 +46,7 @@ func _ready() -> void:
 	$MovingCameraLightAround.set_center_pos_far(Vector3.ZERO, Vector3(0, 0, WorldSize.z),  WorldSize.length()*3)
 	$AxisArrow3D.set_colors().set_size(WorldSize.length()/10)
 	$FixedCameraLight.make_current()
-	add_child( preload("res://multi_mesh_shape/multi_mesh_shape.tscn").instantiate(
-		).init_wire_box(WorldSize, WorldSize.length()/500, Color.WHITE, 0.5))
+	$GlassCabinet.init(WorldSize)
 	$LineTree.init(WorldSize.y, WorldSize.z/2
 		).set_color(random_color(), random_color(), random_color())
 	$LineTree.position.y = - WorldSize.y/2
@@ -56,16 +55,18 @@ func _ready() -> void:
 
 var line_tree_inst_index :Array
 func linetree_color_animate() -> void:
+	var lines :MultiMeshShape = $LineTree.get_lines()
 	for a in line_tree_inst_index:
 		var co := random_color()
 		for i in a:
-			$LineTree/Lines.set_inst_color(i, co)
+			lines.set_inst_color(i, co)
 
 func linetree_color_animate2() -> void:
+	var lines :MultiMeshShape = $LineTree.get_lines()
 	var a :Array = line_tree_inst_index.pick_random()
 	var co := random_color()
 	for i in a:
-		$LineTree/Lines.set_inst_color(i, co)
+		lines.set_inst_color(i, co)
 
 func random_color() -> Color:
 	return NamedColorList.color_list.pick_random()[0]

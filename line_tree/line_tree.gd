@@ -14,6 +14,9 @@ func make_index_array() -> Array:
 		rtn.append(index_array)
 	return rtn
 
+func get_lines() -> MultiMeshShape:
+	return $Lines
+
 func init(h :float, w :float, line_width :float = 0.5, stage_count :int=5) -> LineTree:
 	$"중심기둥".mesh.top_radius = w/1000
 	$"중심기둥".mesh.bottom_radius = w/100
