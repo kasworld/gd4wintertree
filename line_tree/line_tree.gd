@@ -1,21 +1,17 @@
 extends Node3D
 class_name LineTree
 
-var instance_count_per_y :Array[int] = []
-
-func make_index_array() -> Array:
-	var rtn := []
-	var i := 0
-	for count in instance_count_per_y:
-		var index_array := []
-		for j in count:
-			index_array.append(i)
-			i += 1
-		rtn.append(index_array)
-	return rtn
 
 func get_lines() -> MultiMeshShape:
 	return $Lines
+
+func set_center_color(center_color :Color) -> LineTree:
+	$"중심기둥".mesh.material.albedo_color = center_color
+	return self
+
+func set_gradient_color( co1 :Color, co2 :Color) -> LineTree:
+	$Lines.set_gradient_color_all(co1,co2)
+	return self
 
 func init(h :float, w :float, y_count :int, line_width :float = 0.5, stage_count :int=5) -> LineTree:
 	$"중심기둥".mesh.top_radius = w/1000
@@ -32,11 +28,6 @@ func init(h :float, w :float, y_count :int, line_width :float = 0.5, stage_count
 	$Lines.multi_line_by_pos(lines, line_width, Color.WHITE)
 	return self
 
-func set_color(center_color :Color, co1 :Color, co2 :Color) -> LineTree:
-	$"중심기둥".mesh.material.albedo_color = center_color
-	$Lines.set_gradient_color_all(co1,co2)
-	return self
-
 func make_lines(start_y :float, count :int, h :float, r :float) -> Array:
 	instance_count_per_y.append(count)
 	var rtn := []
@@ -47,4 +38,16 @@ func make_lines(start_y :float, count :int, h :float, r :float) -> Array:
 		var rad := rad_step*i + rad_shift
 		var to := Vector3(cos(rad)*r, start_y  , sin(rad)*r)
 		rtn.append([Vector3(0,end_y,0), to])
+	return rtn
+
+var instance_count_per_y :Array[int] = []
+func make_index_array() -> Array:
+	var rtn := []
+	var i := 0
+	for count in instance_count_per_y:
+		var index_array := []
+		for j in count:
+			index_array.append(i)
+			i += 1
+		rtn.append(index_array)
 	return rtn

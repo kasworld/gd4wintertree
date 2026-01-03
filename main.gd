@@ -48,7 +48,7 @@ func _ready() -> void:
 	$FixedCameraLight.make_current()
 	$GlassCabinet.init(WorldSize)
 	$LineTree.init(WorldSize.y, WorldSize.z/2, 100,
-		).set_color(Color.GREEN,Color.GREEN,Color.GREEN)
+		).set_center_color(Color.GREEN)
 	$LineTree.position.y = - WorldSize.y/2
 	line_tree_inst_index = $LineTree.make_index_array()
 
@@ -57,18 +57,42 @@ var green_color_list := NamedColorList.make_green_color_list()
 func linetree_color_animate2() -> void:
 	var lines :MultiMeshShape = $LineTree.get_lines()
 	var a :Array = line_tree_inst_index.pick_random()
-	var co :Color = random_green()
+	var co :Color = random_rate_color([0]) #  random_green_rate(0.6)
 	for i in a:
 		lines.set_inst_color(i, co)
 
 func random_color() -> Color:
 	return NamedColorList.color_list.pick_random()[0]
 
-func random_green() -> Color:
-	return Color(randf_range(0,0.5),randf_range(0.5,1.0),randf_range(0,0.5))
+func random_green_rate(rate :float=0.6) -> Color:
+	return Color(randf_range(0,1-rate),randf_range(rate,1.0),randf_range(0,1-rate))
+func random_red_rate(rate :float=0.6) -> Color:
+	return Color(randf_range(rate,1.0),randf_range(0,1-rate),randf_range(0,1-rate))
+func random_blue_rate(rate :float=0.6) -> Color:
+	return Color(randf_range(0,1-rate),randf_range(0,1-rate),randf_range(rate,1.0))
 
-func random_green2() -> Color:
+func random_rate_color(high_index_list :Array, rate :float=0.6) -> Color:
+	var rtn := Color(0,0,0)
+	for i in high_index_list: # make high
+		rtn[i] = randf_range(rate,1.0)
+	for i in 3: # make low
+		if rtn[i] == 0.0:
+			rtn[i] = randf_range(0,1-rate)
+	return rtn
+
+func random_pure_color(index_list :Array) -> Color:
+	var rtn := Color(0,0,0)
+	var v := randf()
+	for i in index_list:
+		rtn[i] = v
+	return rtn
+
+func random_green_pure() -> Color:
 	return Color(0,randf(),0)
+func random_red_pure() -> Color:
+	return Color(randf(),0,0)
+func random_blue_pure() -> Color:
+	return Color(0,0,randf())
 
 
 func _process(_delta: float) -> void:
