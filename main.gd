@@ -56,9 +56,14 @@ var line_tree_inst_index :Array
 var rgb_index :int = 0
 var rgb_data := [[0],[1],[2],[0,1],[1,2],[2,0], [0,1,2]]
 var change_count := 0
+var forward_dir :bool = true
 func linetree_color_animate2() -> void:
 	var lines :MultiMeshShape = $LineTree.get_lines()
-	var a :Array = line_tree_inst_index[change_count]
+	var a :Array
+	if forward_dir:
+		a = line_tree_inst_index[change_count]
+	else:
+		a = line_tree_inst_index[-change_count-1]
 	var co :Color = RandomColor.rate_color(rgb_data[rgb_index])
 	for i in a:
 		lines.set_inst_color(i, co)
@@ -71,10 +76,16 @@ func linetree_color_animate2() -> void:
 func linetree_color_animate3() -> void:
 	var lines :MultiMeshShape = $LineTree.get_lines()
 	var co :Color = RandomColor.rate_color(rgb_data[rgb_index])
-	for a :Array in line_tree_inst_index:
-		var i = a.pop_front()
-		lines.set_inst_color(i, co)
-		a.push_back(i)
+	if forward_dir:
+		for a :Array in line_tree_inst_index:
+			var i = a.pop_front()
+			lines.set_inst_color(i, co)
+			a.push_back(i)
+	else:
+		for a :Array in line_tree_inst_index:
+			var i = a.pop_back()
+			lines.set_inst_color(i, co)
+			a.push_front(i)
 	change_count +=1
 	if change_count >= line_tree_inst_index[-1].size():
 		change_count = 0
@@ -91,6 +102,7 @@ func linetree_color_animate() -> void:
 			linetree_color_animate_fn = linetree_color_animate3
 		else:
 			linetree_color_animate_fn = linetree_color_animate2
+			forward_dir = not forward_dir
 
 func random_color() -> Color:
 	return NamedColorList.color_list.pick_random()[0]
