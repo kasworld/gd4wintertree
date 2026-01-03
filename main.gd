@@ -53,24 +53,38 @@ func _ready() -> void:
 	line_tree_inst_index = $LineTree.make_index_array()
 
 var line_tree_inst_index :Array
-var green_color_list := NamedColorList.make_green_color_list()
 var rgb_index :int = 0
 var change_count := 0
 func linetree_color_animate2() -> void:
 	var lines :MultiMeshShape = $LineTree.get_lines()
-	var a :Array = line_tree_inst_index.pick_random()
+	var a :Array = line_tree_inst_index[change_count]
 	var co :Color = RandomColor.rate_color([rgb_index])
 	for i in a:
 		lines.set_inst_color(i, co)
 	change_count +=1
-	if change_count > 200:
+	if change_count >= line_tree_inst_index.size():
 		change_count = 0
 		rgb_index += 1
 		rgb_index %= 3
 
+func linetree_color_animate3() -> void:
+	var lines :MultiMeshShape = $LineTree.get_lines()
+	var co :Color = RandomColor.rate_color([rgb_index])
+	for a :Array in line_tree_inst_index:
+		var i = a.pop_front()
+		lines.set_inst_color(i, co)
+		a.push_back(i)
+	change_count +=1
+	if change_count >= line_tree_inst_index[-1].size():
+		change_count = 0
+		rgb_index += 1
+		rgb_index %= 3
+		if rgb_index == 0:
+			line_tree_inst_index = $LineTree.make_index_array()
+
+
 func random_color() -> Color:
 	return NamedColorList.color_list.pick_random()[0]
-
 
 func _process(_delta: float) -> void:
 	var now := Time.get_unix_time_from_system()
