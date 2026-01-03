@@ -17,15 +17,17 @@ func make_index_array() -> Array:
 func get_lines() -> MultiMeshShape:
 	return $Lines
 
-func init(h :float, w :float, line_width :float = 0.5, stage_count :int=5) -> LineTree:
+func init(h :float, w :float, y_count :int, line_width :float = 0.5, stage_count :int=5) -> LineTree:
 	$"중심기둥".mesh.top_radius = w/1000
 	$"중심기둥".mesh.bottom_radius = w/100
 	$"중심기둥".mesh.height = h
 	$"중심기둥".position.y = h /2
 	var lines := []
-	for y in range(h,0,-1):
-		var rate := (h-y)/h
-		var r :float= lerp(1.0, w/2, rate ) + fposmod(rate*h, h/stage_count)*rate
+	var y_step := h / y_count
+	for yi in y_count:
+		var y := y_step * yi
+		var rate := 1 - float(yi) / float(y_count)
+		var r :float= lerp(w/100, w/2, rate ) + fposmod(rate*h, h/stage_count)*rate
 		lines.append_array(make_lines(y,w*1.5*(rate+0.1),10*rate,r))
 	$Lines.multi_line_by_pos(lines, line_width, Color.WHITE)
 	return self

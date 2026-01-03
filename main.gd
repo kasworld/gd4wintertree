@@ -47,29 +47,29 @@ func _ready() -> void:
 	$AxisArrow3D.set_colors().set_size(WorldSize.length()/10)
 	$FixedCameraLight.make_current()
 	$GlassCabinet.init(WorldSize)
-	$LineTree.init(WorldSize.y, WorldSize.z/2
-		).set_color(random_color(), random_color(), random_color())
+	$LineTree.init(WorldSize.y, WorldSize.z/2, 100,
+		).set_color(Color.GREEN,Color.GREEN,Color.GREEN)
 	$LineTree.position.y = - WorldSize.y/2
 	line_tree_inst_index = $LineTree.make_index_array()
-	linetree_color_animate()
 
 var line_tree_inst_index :Array
-func linetree_color_animate() -> void:
-	var lines :MultiMeshShape = $LineTree.get_lines()
-	for a in line_tree_inst_index:
-		var co := random_color()
-		for i in a:
-			lines.set_inst_color(i, co)
-
+var green_color_list := NamedColorList.make_green_color_list()
 func linetree_color_animate2() -> void:
 	var lines :MultiMeshShape = $LineTree.get_lines()
 	var a :Array = line_tree_inst_index.pick_random()
-	var co := random_color()
+	var co :Color = random_green()
 	for i in a:
 		lines.set_inst_color(i, co)
 
 func random_color() -> Color:
 	return NamedColorList.color_list.pick_random()[0]
+
+func random_green() -> Color:
+	return Color(randf_range(0,0.5),randf_range(0.5,1.0),randf_range(0,0.5))
+
+func random_green2() -> Color:
+	return Color(0,randf(),0)
+
 
 func _process(_delta: float) -> void:
 	var now := Time.get_unix_time_from_system()
