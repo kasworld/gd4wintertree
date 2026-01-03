@@ -82,6 +82,14 @@ func linetree_color_animate3() -> void:
 		if rgb_index == 0:
 			line_tree_inst_index = $LineTree.make_index_array()
 
+var linetree_color_animate_fn :Callable = linetree_color_animate2
+func linetree_color_animate() -> void:
+	linetree_color_animate_fn.call()
+	if change_count == 0 and rgb_index == 0:
+		if linetree_color_animate_fn == linetree_color_animate2:
+			linetree_color_animate_fn = linetree_color_animate3
+		else:
+			linetree_color_animate_fn = linetree_color_animate2
 
 func random_color() -> Color:
 	return NamedColorList.color_list.pick_random()[0]
@@ -89,7 +97,7 @@ func random_color() -> Color:
 func _process(_delta: float) -> void:
 	var now := Time.get_unix_time_from_system()
 	label_demo()
-	linetree_color_animate2()
+	linetree_color_animate()
 	if $MovingCameraLightHober.is_current_camera():
 		$MovingCameraLightHober.move_hober_around_z(now/2.3, Vector3.ZERO, WorldSize.length()/2, WorldSize.length()/4 )
 	elif $MovingCameraLightAround.is_current_camera():
