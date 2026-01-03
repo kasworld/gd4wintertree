@@ -58,43 +58,45 @@ var rgb_index :int = 0
 var rgb_data := [[0],[1],[2],[0,1],[1,2],[2,0], [0,1,2]]
 var change_count := 0
 var ani_dir :AniDir
-func linetree_color_animate2() -> void:
+func linetree_color_animate() -> void:
 	var lines :MultiMeshShape = $LineTree.get_lines()
 	var co :Color = RandomColor.rate_color(rgb_data[rgb_index])
 
+	var ani_ended :bool = false
 	match ani_dir:
 		AniDir.Up:
-			var a :Array = line_tree_inst_index[-change_count-1]
-			for i in a:
+			for i in line_tree_inst_index[-change_count-1]:
 				lines.set_inst_color(i, co)
+			change_count +=1
+			ani_ended = change_count >= line_tree_inst_index.size()
 		AniDir.Down:
-			var a :Array = line_tree_inst_index[change_count]
-			for i in a:
+			for i in line_tree_inst_index[change_count]:
 				lines.set_inst_color(i, co)
+			change_count +=1
+			ani_ended = change_count >= line_tree_inst_index.size()
 		AniDir.Left:
 			for a :Array in line_tree_inst_index:
 				var i = a.pop_front()
 				lines.set_inst_color(i, co)
 				a.push_back(i)
+			change_count +=1
+			ani_ended = change_count >= line_tree_inst_index[-1].size()
 		AniDir.Right:
 			for a :Array in line_tree_inst_index:
 				var i = a.pop_back()
 				lines.set_inst_color(i, co)
 				a.push_front(i)
+			change_count +=1
+			ani_ended = change_count >= line_tree_inst_index[-1].size()
 
-	change_count +=1
-	if change_count >= line_tree_inst_index.size():
+	if ani_ended:
 		change_count = 0
 		rgb_index += 1
 		rgb_index %= rgb_data.size()
 		if rgb_index == 0:
 			line_tree_inst_index = $LineTree.make_index_array()
-
-func linetree_color_animate() -> void:
-	linetree_color_animate2.call()
-	if change_count == 0 and rgb_index == 0:
-		ani_dir += 1
-		ani_dir %= 4
+			ani_dir += 1
+			ani_dir %= 4
 
 func random_color() -> Color:
 	return NamedColorList.color_list.pick_random()[0]
