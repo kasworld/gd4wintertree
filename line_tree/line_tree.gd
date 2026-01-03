@@ -20,9 +20,9 @@ func init(h :float, w :float, y_count :int, line_width :float = 0.5, stage_count
 	$"중심기둥".position.y = h /2
 	var lines := []
 	var y_step := h / y_count
-	for yi in y_count:
+	for yi in range(y_count,0,-1):
 		var y := y_step * yi
-		var rate := 1 - float(yi) / float(y_count)
+		var rate := 1-float(yi) / float(y_count)
 		var r :float= lerp(w/100, w/2, rate ) + fposmod(rate*h, h/stage_count)*rate
 		lines.append_array(make_lines(y,w*1.5*(rate+0.1),10*rate,r))
 	$Lines.multi_line_by_pos(lines, line_width, Color.WHITE)
