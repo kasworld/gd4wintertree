@@ -52,57 +52,49 @@ func _ready() -> void:
 	$LineTree.position.y = - WorldSize.y/2
 	line_tree_inst_index = $LineTree.make_index_array()
 
+enum AniDir { Up, Down, Left , Right }
 var line_tree_inst_index :Array
 var rgb_index :int = 0
 var rgb_data := [[0],[1],[2],[0,1],[1,2],[2,0], [0,1,2]]
 var change_count := 0
-var forward_dir :bool = true
+var ani_dir :AniDir
 func linetree_color_animate2() -> void:
 	var lines :MultiMeshShape = $LineTree.get_lines()
-	var a :Array
-	if forward_dir:
-		a = line_tree_inst_index[change_count]
-	else:
-		a = line_tree_inst_index[-change_count-1]
 	var co :Color = RandomColor.rate_color(rgb_data[rgb_index])
-	for i in a:
-		lines.set_inst_color(i, co)
+
+	match ani_dir:
+		AniDir.Up:
+			var a :Array = line_tree_inst_index[-change_count-1]
+			for i in a:
+				lines.set_inst_color(i, co)
+		AniDir.Down:
+			var a :Array = line_tree_inst_index[change_count]
+			for i in a:
+				lines.set_inst_color(i, co)
+		AniDir.Left:
+			for a :Array in line_tree_inst_index:
+				var i = a.pop_front()
+				lines.set_inst_color(i, co)
+				a.push_back(i)
+		AniDir.Right:
+			for a :Array in line_tree_inst_index:
+				var i = a.pop_back()
+				lines.set_inst_color(i, co)
+				a.push_front(i)
+
 	change_count +=1
 	if change_count >= line_tree_inst_index.size():
-		change_count = 0
-		rgb_index += 1
-		rgb_index %= rgb_data.size()
-
-func linetree_color_animate3() -> void:
-	var lines :MultiMeshShape = $LineTree.get_lines()
-	var co :Color = RandomColor.rate_color(rgb_data[rgb_index])
-	if forward_dir:
-		for a :Array in line_tree_inst_index:
-			var i = a.pop_front()
-			lines.set_inst_color(i, co)
-			a.push_back(i)
-	else:
-		for a :Array in line_tree_inst_index:
-			var i = a.pop_back()
-			lines.set_inst_color(i, co)
-			a.push_front(i)
-	change_count +=1
-	if change_count >= line_tree_inst_index[-1].size():
 		change_count = 0
 		rgb_index += 1
 		rgb_index %= rgb_data.size()
 		if rgb_index == 0:
 			line_tree_inst_index = $LineTree.make_index_array()
 
-var linetree_color_animate_fn :Callable = linetree_color_animate2
 func linetree_color_animate() -> void:
-	linetree_color_animate_fn.call()
+	linetree_color_animate2.call()
 	if change_count == 0 and rgb_index == 0:
-		if linetree_color_animate_fn == linetree_color_animate2:
-			linetree_color_animate_fn = linetree_color_animate3
-		else:
-			linetree_color_animate_fn = linetree_color_animate2
-			forward_dir = not forward_dir
+		ani_dir += 1
+		ani_dir %= 4
 
 func random_color() -> Color:
 	return NamedColorList.color_list.pick_random()[0]
