@@ -59,14 +59,15 @@ var line_tree_inst_index :Array
 var rgb_index :int = 0
 var rgb_data := [[0],[1],[2],[0,1],[1,2],[2,0], [0,1,2]]
 var color_fn :Callable = RandomColor.pure_color
+var ani_dir_data := [AniDir.Up, AniDir.Down, AniDir.Left , AniDir.Right]
+var ani_dir_index :int
 var change_count := 0
-var ani_dir :AniDir
 func linetree_color_animate() -> void:
 	var lines :MultiMeshShape = $LineTree.get_lines()
 	var co :Color = color_fn.call(rgb_data[rgb_index])
 
 	var ani_ended :bool = false
-	match ani_dir:
+	match ani_dir_data[ani_dir_index]:
 		AniDir.Up:
 			for i in line_tree_inst_index[-change_count-1]:
 				lines.set_inst_color(i, co)
@@ -99,7 +100,10 @@ func linetree_color_animate() -> void:
 		if rgb_index == 0:
 			rgb_data.shuffle()
 		line_tree_inst_index = line_tree_inst_index_ori.duplicate()
-		ani_dir = randi_range(0,3)
+		ani_dir_index += 1
+		ani_dir_index %= 4
+		if ani_dir_index == 0:
+			ani_dir_data.shuffle()
 		color_fn = [RandomColor.pure_color, RandomColor.rate_color].pick_random()
 
 func random_color() -> Color:
