@@ -58,7 +58,8 @@ var color_fn_args := ShuffleIter.new( [[0],[1],[2],[0,1],[1,2],[2,0], [0,1,2]] )
 var color_fn :Callable = RandomColor.pure_color
 var ani_dir_data := ShuffleIter.new( [AniDir.Up, AniDir.Down, AniDir.Left , AniDir.Right] )
 var change_count := 0
-func linetree_color_animate() -> void:
+func linetree_animate(delta :float) -> void:
+	$LineTree.rotate_y(delta)
 	var lines :MultiMeshShape = $LineTree.get_lines()
 	var co :Color = color_fn.call(color_fn_args.get_current())
 	var ani_ended :bool = false
@@ -99,10 +100,10 @@ func linetree_color_animate() -> void:
 func random_color() -> Color:
 	return NamedColorList.color_list.pick_random()[0]
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	var now := Time.get_unix_time_from_system()
 	label_demo()
-	linetree_color_animate()
+	linetree_animate(delta)
 	if $MovingCameraLightHober.is_current_camera():
 		$MovingCameraLightHober.move_hober_around_z(now/2.3, Vector3.ZERO, WorldSize.length()/2, WorldSize.length()/4 )
 	elif $MovingCameraLightAround.is_current_camera():
