@@ -48,7 +48,9 @@ func _ready() -> void:
 	$FixedCameraLight.make_current()
 	$GlassCabinet.init(WorldSize)
 
-	$LineTree.init(WorldSize.y, WorldSize.z/2, 100, PI, 0.5,
+	var bmesh := BoxMesh.new()
+	bmesh.size = Vector3(1,0.2,1)
+	$LineTree.init(bmesh, WorldSize.y, WorldSize.z/2, 100, PI/2, 1.0,
 		).set_center_color(Color.GREEN)
 	$LineTree.position.y = - WorldSize.y/2
 	line_tree_inst_index = $LineTree.make_index_array()
