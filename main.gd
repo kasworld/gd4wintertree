@@ -54,14 +54,13 @@ func _ready() -> void:
 
 enum AniDir { Up, Down, Left , Right }
 var line_tree_inst_index :Array
-var rgb_data := ShuffleIter.new( [[0],[1],[2],[0,1],[1,2],[2,0], [0,1,2]] )
+var color_fn_args := ShuffleIter.new( [[0],[1],[2],[0,1],[1,2],[2,0], [0,1,2]] )
 var color_fn :Callable = RandomColor.pure_color
 var ani_dir_data := ShuffleIter.new( [AniDir.Up, AniDir.Down, AniDir.Left , AniDir.Right] )
 var change_count := 0
 func linetree_color_animate() -> void:
 	var lines :MultiMeshShape = $LineTree.get_lines()
-	var co :Color = color_fn.call(rgb_data.get_current())
-
+	var co :Color = color_fn.call(color_fn_args.get_current())
 	var ani_ended :bool = false
 	match ani_dir_data.get_current():
 		AniDir.Up:
@@ -92,7 +91,7 @@ func linetree_color_animate() -> void:
 			ani_ended = change_count >= line_tree_inst_index[-1].size()
 
 	if ani_ended:
-		rgb_data.get_next()
+		color_fn_args.get_next()
 		ani_dir_data.get_next()
 		change_count = 0
 		color_fn = [RandomColor.pure_color, RandomColor.rate_color].pick_random()
