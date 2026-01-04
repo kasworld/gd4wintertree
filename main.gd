@@ -47,7 +47,8 @@ func _ready() -> void:
 	$AxisArrow3D.set_colors().set_size(WorldSize.length()/10)
 	$FixedCameraLight.make_current()
 	$GlassCabinet.init(WorldSize)
-	$LineTree.init(WorldSize.y, WorldSize.z/2, 100,
+
+	$LineTree.init(WorldSize.y, WorldSize.z/2, 100, PI, 0.5,
 		).set_center_color(Color.GREEN)
 	$LineTree.position.y = - WorldSize.y/2
 	line_tree_inst_index = $LineTree.make_index_array()
