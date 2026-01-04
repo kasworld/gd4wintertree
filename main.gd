@@ -50,6 +50,10 @@ func _ready() -> void:
 
 	var bmesh := BoxMesh.new()
 	bmesh.size = Vector3(1,0.2,1)
+	#var bmesh := CylinderMesh.new()
+	#bmesh.height = 0.2
+	#bmesh.rings = 1
+	#bmesh.radial_segments = 8
 	$LineTree.init(bmesh, WorldSize.y, WorldSize.z/2, 100, PI/2, 1.0,
 		).set_center_color(Color.GREEN)
 	$LineTree.position.y = - WorldSize.y/2
