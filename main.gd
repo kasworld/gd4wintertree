@@ -54,11 +54,15 @@ func _ready() -> void:
 	#bmesh.height = 0.2
 	#bmesh.rings = 1
 	#bmesh.radial_segments = 8
-	$LineTree.init(bmesh, WorldSize.y, WorldSize.z/2, 100, PI/2, 1.0,
+	line_tree = preload("res://line_tree/line_tree.tscn").instantiate(
+		).init(bmesh, WorldSize.y, WorldSize.z/2, 100, PI/2, 1.0,
 		).set_center_color(Color.GREEN)
-	$LineTree.position.y = - WorldSize.y/2
-	line_tree_inst_index = $LineTree.make_index_array()
+	add_child(line_tree)
+	$"왼쪽패널/LabelTree".text = "branch count %d" % [ line_tree.get_lines().multimesh.instance_count ]
+	line_tree.position.y = - WorldSize.y/2
+	line_tree_inst_index = line_tree.make_index_array()
 
+var line_tree :LineTree
 enum AniDir { Up, Down, Left , Right }
 var line_tree_inst_index :Array
 var color_fn_args := ShuffleIter.new( [[0],[1],[2],[0,1],[1,2],[2,0], [0,1,2]] )
@@ -66,8 +70,8 @@ var color_fn :Callable = RandomColor.pure_color
 var ani_dir_data := ShuffleIter.new( [AniDir.Up, AniDir.Down, AniDir.Left , AniDir.Right] )
 var change_count := 0
 func linetree_animate(delta :float) -> void:
-	$LineTree.rotate_y(delta)
-	var lines :MultiMeshShape = $LineTree.get_lines()
+	line_tree.rotate_y(delta)
+	var lines :MultiMeshShape = line_tree.get_lines()
 	var co :Color = color_fn.call(color_fn_args.get_current())
 	var ani_ended :bool = false
 	match ani_dir_data.get_current():

@@ -1,9 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://c6maulcewyhy5"]
+[gd_scene load_steps=12 format=3 uid="uid://c6maulcewyhy5"]
 
 [ext_resource type="Script" uid="uid://bgj25qi5j8dgh" path="res://main.gd" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://dl14flc0fkeyt" path="res://axis_arrow_3d/axis_arrow_3d.tscn" id="5_7mycd"]
 [ext_resource type="PackedScene" uid="uid://c6cct2gj2a3im" path="res://timed_message/timed_message.tscn" id="5_lquwl"]
-[ext_resource type="PackedScene" uid="uid://cpcmrvaeq2qi" path="res://line_tree/line_tree.tscn" id="6_7mycd"]
 [ext_resource type="PackedScene" uid="uid://clnf86bglf40d" path="res://glass_cabinet/glass_cabinet.tscn" id="6_272bh"]
 [ext_resource type="PackedScene" uid="uid://ces3a6yv0c5fi" path="res://moving_carmera_light/moving_camera_light.tscn" id="8_5vw27"]
 
@@ -37,7 +36,7 @@ offset_right = 40.0
 offset_bottom = 138.0
 theme = SubResource("Theme_h2yge")
 
-[node name="LabelReel" type="Label" parent="왼쪽패널"]
+[node name="LabelTree" type="Label" parent="왼쪽패널"]
 layout_mode = 2
 
 [node name="LabelWheel" type="Label" parent="왼쪽패널"]
@@ -92,7 +91,5 @@ visible = false
 [node name="MovingCameraLightHober" parent="." instance=ExtResource("8_5vw27")]
 
 [node name="MovingCameraLightAround" parent="." instance=ExtResource("8_5vw27")]
-
-[node name="LineTree" parent="." instance=ExtResource("6_7mycd")]
 
 [node name="GlassCabinet" parent="." instance=ExtResource("6_272bh")]
