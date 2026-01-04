@@ -50,11 +50,9 @@ func _ready() -> void:
 	$LineTree.init(WorldSize.y, WorldSize.z/2, 100,
 		).set_center_color(Color.GREEN)
 	$LineTree.position.y = - WorldSize.y/2
-	line_tree_inst_index_ori = $LineTree.make_index_array()
-	line_tree_inst_index = line_tree_inst_index_ori.duplicate()
+	line_tree_inst_index = $LineTree.make_index_array()
 
 enum AniDir { Up, Down, Left , Right }
-var line_tree_inst_index_ori :Array
 var line_tree_inst_index :Array
 var rgb_index :int = 0
 var rgb_data := [[0],[1],[2],[0,1],[1,2],[2,0], [0,1,2]]
@@ -80,16 +78,18 @@ func linetree_color_animate() -> void:
 			ani_ended = change_count >= line_tree_inst_index.size()
 		AniDir.Left:
 			for a :Array in line_tree_inst_index:
-				var i = a.pop_front()
+				if change_count >= a.size():
+					continue
+				var i = a[change_count]
 				lines.set_inst_color(i, co)
-				a.push_back(i)
 			change_count +=1
 			ani_ended = change_count >= line_tree_inst_index[-1].size()
 		AniDir.Right:
 			for a :Array in line_tree_inst_index:
-				var i = a.pop_back()
+				if change_count >= a.size():
+					continue
+				var i = a[-change_count-1]
 				lines.set_inst_color(i, co)
-				a.push_front(i)
 			change_count +=1
 			ani_ended = change_count >= line_tree_inst_index[-1].size()
 
@@ -99,7 +99,6 @@ func linetree_color_animate() -> void:
 		rgb_index %= rgb_data.size()
 		if rgb_index == 0:
 			rgb_data.shuffle()
-		line_tree_inst_index = line_tree_inst_index_ori.duplicate()
 		ani_dir_index += 1
 		ani_dir_index %= 4
 		if ani_dir_index == 0:
