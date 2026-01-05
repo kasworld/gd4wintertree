@@ -48,14 +48,10 @@ func _ready() -> void:
 	$FixedCameraLight.make_current()
 	$GlassCabinet.init(WorldSize)
 
-	var bmesh := BoxMesh.new()
-	bmesh.size = Vector3(1,0.2,1)
-	#var bmesh := CylinderMesh.new()
-	#bmesh.height = 0.2
-	#bmesh.rings = 1
-	#bmesh.radial_segments = 8
+	var bmesh := PrismMesh.new()
+	bmesh.size = Vector3(1,0.3,1)
 	line_tree = preload("res://line_tree/line_tree.tscn").instantiate(
-		).init(bmesh, WorldSize.y, WorldSize.z/2, 100, PI/2, 1.0,
+		).init(bmesh, WorldSize.y, WorldSize.z/2, WorldSize.y, PI, 1.0,
 		).set_center_color(Color.GREEN)
 	add_child(line_tree)
 	$"왼쪽패널/LabelTree".text = "branch count %d" % [ line_tree.get_lines().multimesh.instance_count ]
