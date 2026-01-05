@@ -51,12 +51,13 @@ func _ready() -> void:
 	var bmesh := PrismMesh.new()
 	bmesh.size = Vector3(1,0.3,1)
 	line_tree = preload("res://line_tree/line_tree.tscn").instantiate(
-		).init(bmesh, WorldSize.y, WorldSize.z/2, WorldSize.y, PI, 1.0,
+		).init(bmesh, WorldSize.y, WorldSize.z/2, WorldSize.y*2, PI, 1.0,
 		).set_center_color(Color.GREEN)
 	add_child(line_tree)
 	$"왼쪽패널/LabelTree".text = "branch count %d" % [ line_tree.get_lines().multimesh.instance_count ]
 	line_tree.position.y = - WorldSize.y/2
 	line_tree_inst_index = line_tree.make_index_array()
+
 
 var line_tree :LineTree
 enum AniDir { Up, Down, Left , Right }
@@ -102,7 +103,12 @@ func linetree_animate(delta :float) -> void:
 		color_fn_args.get_next()
 		ani_dir_data.get_next()
 		change_count = 0
-		color_fn = [RandomColor.pure_color, RandomColor.rate_color].pick_random()
+		color_fn = [RandomColor.pure_color, RandomColor.rate_color, random_color2].pick_random()
+
+var named_color_list := ShuffleIter.new(NamedColorList.color_list)
+func random_color2(_arg ) -> Color:
+	return named_color_list.get_next()[0]
+
 
 func random_color() -> Color:
 	return NamedColorList.color_list.pick_random()[0]
