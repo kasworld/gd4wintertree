@@ -13,6 +13,9 @@ func _init(co1 :Color, co2 :Color, count_a :int) -> void:
 func calc_progress() -> float:
 	return float(cursor)/float(count-1)
 
+func get_cursor() -> int:
+	return cursor
+
 func get_current_color() -> Color:
 	return color_from.lerp(color_to, calc_progress())
 
