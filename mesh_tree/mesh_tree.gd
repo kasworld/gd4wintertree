@@ -2,7 +2,8 @@ extends MultiMeshShape
 class_name MeshTree
 
 func init(mesh :Mesh, h :float, w :float, y_count :int, w_branch_density :float = PI, stage_count :int=5) -> MeshTree:
-	var pos_list := []
+	pos_list = []
+	instance_count_per_y = []
 	var y_step := h / y_count
 	for yi in range(y_count-1,0,-1):
 		var y := y_step * yi
@@ -26,7 +27,8 @@ func make_pos_list(start_y :float, count :int, r :float) -> Array:
 		rtn.append(to)
 	return rtn
 
-var instance_count_per_y :Array[int] = []
+var pos_list :Array
+var instance_count_per_y :Array[int]
 func make_index_array() -> Array:
 	var rtn := []
 	var i := 0

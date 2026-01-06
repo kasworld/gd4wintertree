@@ -59,14 +59,23 @@ func _ready() -> void:
 	line_tree_inst_index = line_tree.make_index_array()
 
 	var sp_mesh := SphereMesh.new()
-	sp_mesh.radius = 1
-	sp_mesh.height = 1*2
-	mesh_tree = preload("res://mesh_tree/mesh_tree.tscn").instantiate(
-		).init(sp_mesh, WorldSize.y, WorldSize.z/2, WorldSize.y/5, PI/5)
+	sp_mesh.radius = 0.5
+	sp_mesh.height = 0.5*2
+
+	#mesh_tree = preload("res://mesh_tree/mesh_tree.tscn").instantiate(
+		#).init(sp_mesh, WorldSize.y, WorldSize.z/2, WorldSize.y/5, PI/5)
+
+	var pos_list := []
+	for i in 1000:
+		var l = line_tree.line_list.pick_random()
+		pos_list.append(l[1])
+	mesh_tree = preload("res://multi_mesh_shape/multi_mesh_shape.tscn").instantiate(
+		).init_meshs_by_point_list(sp_mesh, pos_list, Color.WHITE)
 	add_child(mesh_tree)
 	mesh_tree.position.y = - WorldSize.y/2
 
-var mesh_tree :MeshTree
+#var mesh_tree :MeshTree
+var mesh_tree :MultiMeshShape
 var line_tree :LineTree
 enum AniDir { Up, Down, Left , Right }
 var line_tree_inst_index :Array
@@ -114,6 +123,7 @@ func linetree_animate(delta :float) -> void:
 		ani_dir_data.get_next()
 		change_count = 0
 		color_fn = [RandomColor.pure_color, RandomColor.rate_color, random_color2].pick_random()
+		mesh_tree.set_color_all( random_color())
 
 var named_color_list := ShuffleIter.new(NamedColorList.color_list)
 func random_color2(_arg ) -> Color:
