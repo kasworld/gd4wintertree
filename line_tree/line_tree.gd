@@ -21,11 +21,15 @@ func init(mesh :Mesh, h :float, w :float, y_count :int, w_branch_density :float 
 	var y_step := h / y_count
 	for yi in range(y_count,0,-1):
 		var y := y_step * yi
-		var rate := 1-float(yi) / float(y_count)
-		var r :float= lerp(w/100, w/2, rate ) + fposmod(rate*h, h/stage_count)*rate
-		lines.append_array(make_lines(y, y_step, w*w_branch_density*(rate+0.1), 10*rate, r))
+		var rate := 1.0 - y/h
+		var r :float= calc_radius_by_y(y, h, w, stage_count)
+		lines.append_array(make_lines(y, y_step, r * w_branch_density, 10*rate, r))
 	$Lines.multi_mesh_line_by_pos(mesh, lines, line_width, Color.WHITE)
 	return self
+
+func calc_radius_by_y(y :float, h :float, w :float, stage_count :int) -> float:
+	var rate := 1.0 - y/h
+	return lerp(w/100, w/2, rate ) + fposmod(rate*h, h/stage_count)*rate
 
 func make_lines(start_y :float, y_step :float, count :int, h :float, r :float) -> Array:
 	instance_count_per_y.append(count)

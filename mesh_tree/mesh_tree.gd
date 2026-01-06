@@ -6,11 +6,14 @@ func init(mesh :Mesh, h :float, w :float, y_count :int, w_branch_density :float 
 	var y_step := h / y_count
 	for yi in range(y_count-1,0,-1):
 		var y := y_step * yi
-		var rate := 1-float(yi) / float(y_count)
-		var r :float= lerp(w/100, w/2, rate ) + fposmod(rate*h, h/stage_count)*rate
-		pos_list.append_array(make_pos_list(y, w*w_branch_density*(rate+0.1), r))
+		var r :float= calc_radius_by_y(y, h, w, stage_count)
+		pos_list.append_array(make_pos_list(y, r*w_branch_density, r))
 	$MultiMeshShape.init_meshs_by_point_list(mesh, pos_list, Color.WHITE)
 	return self
+
+func calc_radius_by_y(y :float, h :float, w :float, stage_count :int) -> float:
+	var rate := 1.0 - y/h
+	return lerp(w/100, w/2, rate ) + fposmod(rate*h, h/stage_count)*rate
 
 func make_pos_list(start_y :float, count :int, r :float) -> Array:
 	instance_count_per_y.append(count)
