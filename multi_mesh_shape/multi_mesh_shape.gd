@@ -237,44 +237,61 @@ static func make_color_material(co :Color) -> StandardMaterial3D:
 		mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	mat.albedo_color = co
 	mat.vertex_color_use_as_albedo = true
+
+	#mat.metallic = 1.0
+	##mat.roughness = 0.5
+	#mat.clearcoat_enabled = true
+	#mat.refraction_enabled = true
+	#mat.rim_enabled = true
 	return mat
 
-func _init_multimesh(mesh :Mesh, mat :Material) -> void:
-	mesh.material = mat
-	multimesh.mesh = mesh
-	multimesh.transform_format = MultiMesh.TRANSFORM_3D
 
 func _set_count(count :int) -> void:
 	multimesh.instance_count = count
 	multimesh.visible_instance_count = count
 
 
-func init_with_material(
-		mesh :Mesh, mat :Material, count :int,
+func _init_multimesh(mesh :Mesh) -> void:
+	multimesh.mesh = mesh
+	multimesh.transform_format = MultiMesh.TRANSFORM_3D
+
+func init_with_mesh( mesh :Mesh, count :int,
 		callinit_transform :bool = true,
 		pos :Vector3 = Vector3.ZERO ) -> MultiMeshShape:
-	_init_multimesh(mesh, mat)
+	_init_multimesh(mesh)
 	# Then resize (otherwise, changing the format is not allowed).
 	_set_count(count)
 	if callinit_transform:
 		init_position_all(pos)
 	return self
 
-func init_with_alpha(
-		mesh :Mesh, count :int,
-		alpha :float = 1.0,
+func init_with_color_mesh( mesh :Mesh, count :int,
 		callinit_transform :bool = true,
 		pos :Vector3 = Vector3.ZERO) -> MultiMeshShape:
-	if alpha == 1.0:
-		_init_multimesh(mesh, make_color_material( Color.WHITE ))
-	else:
-		_init_multimesh(mesh, make_color_material( Color(Color.WHITE,alpha) ))
+	_init_multimesh(mesh)
 	multimesh.use_colors = true # before set instance_count
 	# Then resize (otherwise, changing the format is not allowed).
 	_set_count(count)
 	if callinit_transform:
 		init_position_all(pos)
 	return self
+
+func init_with_alpha( mesh :Mesh, count :int,
+		alpha :float = 1.0,
+		callinit_transform :bool = true,
+		pos :Vector3 = Vector3.ZERO) -> MultiMeshShape:
+	if alpha == 1.0:
+		mesh.material = make_color_material( Color.WHITE )
+	else:
+		mesh.material = make_color_material( Color(Color.WHITE,alpha) )
+	_init_multimesh(mesh)
+	multimesh.use_colors = true # before set instance_count
+	# Then resize (otherwise, changing the format is not allowed).
+	_set_count(count)
+	if callinit_transform:
+		init_position_all(pos)
+	return self
+
 
 func init_position_all(pos :Vector3 = Vector3.ZERO) -> void:
 	if pos == Vector3.ZERO:
