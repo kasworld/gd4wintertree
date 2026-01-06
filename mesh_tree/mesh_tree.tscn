@@ -1,13 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://bo3r63cxh32er"]
+[gd_scene load_steps=3 format=3 uid="uid://bo3r63cxh32er"]
 
 [ext_resource type="Script" uid="uid://bcl28n5sh2bvf" path="res://mesh_tree/mesh_tree.gd" id="1_3b33o"]
-[ext_resource type="PackedScene" uid="uid://cfnbpemvoy1i6" path="res://multi_mesh_shape/multi_mesh_shape.tscn" id="2_rev7e"]
 
-[sub_resource type="MultiMesh" id="MultiMesh_fxf6q"]
-resource_local_to_scene = true
+[sub_resource type="MultiMesh" id="MultiMesh_3b33o"]
 
-[node name="MeshTree" type="Node3D"]
+[node name="MeshTree" type="MultiMeshInstance3D"]
+multimesh = SubResource("MultiMesh_3b33o")
 script = ExtResource("1_3b33o")
-
-[node name="MultiMeshShape" parent="." instance=ExtResource("2_rev7e")]
-multimesh = SubResource("MultiMesh_fxf6q")
+metadata/_custom_type_script = "uid://brthvnlbu6c53"

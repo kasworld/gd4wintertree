@@ -61,12 +61,12 @@ func _ready() -> void:
 	var sp_mesh := SphereMesh.new()
 	sp_mesh.radius = 1
 	sp_mesh.height = 1*2
-	var mesh_tree :MeshTree = preload("res://mesh_tree/mesh_tree.tscn").instantiate(
-		).init(sp_mesh, WorldSize.y, WorldSize.z/2, WorldSize.y/10, PI/10)
+	mesh_tree = preload("res://mesh_tree/mesh_tree.tscn").instantiate(
+		).init(sp_mesh, WorldSize.y, WorldSize.z/2, WorldSize.y/5, PI/5)
 	add_child(mesh_tree)
 	mesh_tree.position.y = - WorldSize.y/2
 
-
+var mesh_tree :MeshTree
 var line_tree :LineTree
 enum AniDir { Up, Down, Left , Right }
 var line_tree_inst_index :Array
@@ -75,6 +75,7 @@ var color_fn :Callable = RandomColor.pure_color
 var ani_dir_data := ShuffleIter.new( [AniDir.Up, AniDir.Down, AniDir.Left , AniDir.Right] )
 var change_count := 0
 func linetree_animate(delta :float) -> void:
+	mesh_tree.rotate_y(delta)
 	line_tree.rotate_y(delta)
 	var lines :MultiMeshShape = line_tree.get_lines()
 	var co :Color = color_fn.call(color_fn_args.get_current())
@@ -106,6 +107,7 @@ func linetree_animate(delta :float) -> void:
 				lines.set_inst_color(i, co)
 			change_count +=1
 			ani_ended = change_count >= line_tree_inst_index[-1].size()
+	mesh_tree.set_inst_color( randi_range(0, mesh_tree.multimesh.instance_count-1),  random_color())
 
 	if ani_ended:
 		color_fn_args.get_next()

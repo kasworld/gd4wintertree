@@ -1,4 +1,4 @@
-extends Node3D
+extends MultiMeshShape
 class_name MeshTree
 
 func init(mesh :Mesh, h :float, w :float, y_count :int, w_branch_density :float = PI, stage_count :int=5) -> MeshTree:
@@ -8,7 +8,7 @@ func init(mesh :Mesh, h :float, w :float, y_count :int, w_branch_density :float 
 		var y := y_step * yi
 		var r :float= calc_radius_by_y(y, h, w, stage_count)
 		pos_list.append_array(make_pos_list(y, r*w_branch_density, r))
-	$MultiMeshShape.init_meshs_by_point_list(mesh, pos_list, Color.WHITE)
+	init_meshs_by_point_list(mesh, pos_list, Color.WHITE)
 	return self
 
 func calc_radius_by_y(y :float, h :float, w :float, stage_count :int) -> float:
