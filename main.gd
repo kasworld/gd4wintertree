@@ -58,6 +58,14 @@ func _ready() -> void:
 	line_tree.position.y = - WorldSize.y/2
 	line_tree_inst_index = line_tree.make_index_array()
 
+	var sp_mesh := SphereMesh.new()
+	sp_mesh.radius = 1
+	sp_mesh.height = 1*2
+	var mesh_tree :MeshTree = preload("res://mesh_tree/mesh_tree.tscn").instantiate(
+		).init(sp_mesh, WorldSize.y, WorldSize.z/2, WorldSize.y/10, PI/10)
+	add_child(mesh_tree)
+	mesh_tree.position.y = - WorldSize.y/2
+
 
 var line_tree :LineTree
 enum AniDir { Up, Down, Left , Right }
