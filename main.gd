@@ -126,9 +126,10 @@ func _on_button_esc_pressed() -> void:
 func _on_카메라변경_pressed() -> void:
 	MovingCameraLight.NextCamera()
 func _on_button_fov_up_pressed() -> void:
-	MovingCameraLight.GetCurrentCamera().fov_camera_inc()
+	MovingCameraLight.GetCurrentCamera().camera_fov_inc()
+
 func _on_button_fov_down_pressed() -> void:
-	MovingCameraLight.GetCurrentCamera().fov_camera_dec()
+	MovingCameraLight.GetCurrentCamera().camera_fov_dec()
 var key2fn = {
 	KEY_ESCAPE:_on_button_esc_pressed,
 	KEY_ENTER:_on_카메라변경_pressed,
